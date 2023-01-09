@@ -230,3 +230,5 @@ and product_code='PLAY4';
 
 --Borrar una fila(ejemplo): delete from orders where number=2; / Aixó borraría la fila on el atribut 'number' sigui 2.
 --Si lo quieres actualizar(ejemplo): update orders set number=2 where number=3; / Aixó agafarà el que sigui number 3 y ho canviarà a 2.
+
+GRANT select ON SQL1NORMALAUTH.OCCUPATIONS TO 'adurango2'@'%';
