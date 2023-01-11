@@ -68,8 +68,49 @@ insert into Company (ID, name, year_of_creation, headquarters_adress) values
 ('C03', 'Barcos Ramón','1980-02-14','calle Vitoshko Lale 16'),
 ('D04', 'Vayana trips','1940-09-20', 'Calle Serrano Galvache, 56');
 
---Per probar lo de set default
-
 Insert into Company (ID, name, headquarters_adress) values 
 ('E05', 'Bahiá Bikini','Calle Mallorca 236');
 
+insert into boats (ID, name, boat_type, company_ID) values
+('001', 'Don Camarón', 'Velero','A01'),
+('002', 'El Emperador del Mar', 'Crucero','C03'),
+('003', 'Subnautica','Barco','E05'),
+('004','Below Zero','Lancha','A01'),
+('005','El Holandés Errante','Barco Mercante','B02');
+
+insert into boats (ID, name, boat_type) values
+('006','Barco Tio Jinés','Barca de pesca');
+
+insert into clients (name, SSNN, age, contact, nationality) values
+(),
+(),
+(),
+(),
+();
+
+insert into ports (ID, name, adress) values
+(),
+(),
+(),
+(),
+();
+
+insert into trips (ID, amount_of_passengers, start_date, end_date, boat_ID, origin_port_ID, destiny_port_ID) values
+(),
+(),
+(),
+(),
+();
+
+insert into company_trips (trip_ID, company_ID) values
+(),
+(),
+(),
+(),
+();
+insert into clients_trips (clients_ID, trip_ID) values
+(),
+(),
+(),
+(),
+();
