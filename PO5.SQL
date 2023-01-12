@@ -3,11 +3,12 @@
 create database P05;
 
 create table company (
-ID varchar(50) primary key,
+ID varchar(50) primary key default 'Unknown Company',
 name varchar(50),
 year_of_creation date default '1990-01-01',
 headquarters_adress varchar(50)
 );
+
 
 create table boats (
 ID serial primary key,
@@ -36,12 +37,12 @@ create table trips (
     amount_of_passengers int,
     start_date date,
     end_date date check (end_date > start_date),
-    boat_ID int unique,
+    boat_ID int,
     origin_port_ID varchar(10) unique, 
     destiny_port_ID varchar(10) unique,
     constraint fk_1_trips foreign key (boat_ID) references boats (ID),
-    constraint fk_2_trips foreign key (origin_port_ID) references ports (ID),
-    constraint fk_3_trips foreign key (destiny_port_ID) references ports (ID)
+    constraint fk_2_trips foreign key (origin_port_ID) references ports on delete cascade (ID),
+    constraint fk_3_trips foreign key (destiny_port_ID) references ports on delete cascade (ID)
 );
     
 create table company_trips (
@@ -57,7 +58,7 @@ create table clients_trips (
     trip_ID int,
     primary key (clients_ID,trip_ID),
     constraint fk_1_clients_trips foreign key (clients_ID) references clients (ID) on delete set null,
-    constraint fk_2_clients_trips foreign key (trip_ID) references trips (ID) on delete cascade
+    constraint fk_2_clients_trips foreign key (trip_ID) references trips (ID)
 );
 
 ---------------------------------------
@@ -82,35 +83,35 @@ insert into boats (ID, name, boat_type) values
 ('006','Barco Tio Jinés','Barca de pesca');
 
 insert into clients (name, SSNN, age, contact, nationality) values
-(),
-(),
-(),
-(),
-();
+('Sergi','555501234','24','sergiaa@gmail.com','estadounidense'),
+('Pedro','396120465','41','pedroponi@gmail.com','suizo'),
+('Paola','14802650','21','paolasuperestar@outlook.es','holandesa'),
+('Rebeca','38110092','32','rebecarabbit@hotmail.com','canadiense'),
+('Ramón','21545120','38','ramonelruedas@gmail.com','mexicano');
 
 insert into ports (ID, name, adress) values
-(),
-(),
-(),
-(),
-();
+('PMI', 'Palma de Mallorca','07015 Palma'),
+('BCN','Barcelona','Moll de Barcelona 08039 '),
+('VLC','Valencia','AV, Mlle. del Turia, S/N, 46024'),
+('IBZ','Ibiza','Avinguda de Santa Eulària des Riu, 17, 07800'),
+('MLG','Málaga','Muelle de Cánovas s/n 29001 Málaga');
 
-insert into trips (ID, amount_of_passengers, start_date, end_date, boat_ID, origin_port_ID, destiny_port_ID) values
-(),
-(),
-(),
-(),
-();
+insert into trips (amount_of_passengers, start_date, end_date, boat_ID, origin_port_ID, destiny_port_ID) values
+('3','2022/01/10','2022/01/13','001','PMI','IBZ'),
+('2','2022/03/01','2022/03/08','002','IBZ','MLG'),
+('1','2021/10/27','2021/11/04','003','BCN','VLC'),
+('4','2023/01/03','2023/01/07','005','VLC','PMI'),
+('7','2020/01/17','2020/02/17','006','IBZ','PMI');
 
 insert into company_trips (trip_ID, company_ID) values
-(),
-(),
-(),
-(),
-();
+('3','A01'),
+('4','A01'),
+('5','B02'),
+('6','E05'),
+('7','D04');
 insert into clients_trips (clients_ID, trip_ID) values
-(),
-(),
-(),
-(),
-();
+('1','5'),
+('2','7'),
+('3','3'),
+('4','6'),
+('5','4');
