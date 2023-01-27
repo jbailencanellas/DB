@@ -1,0 +1,86 @@
+--1
+
+select surname, salary, dept_num from employees;
+
+--2
+
+select num, name from departments;
+
+--3
+
+select * from employees;
+
+--4
+
+select * from employees order by surname;
+
+--5
+
+select * from departments order by num desc;
+
+--6
+
+select * from employees order by dept_num desc, surname asc;
+
+--7
+
+select * from employees where salary>2000;
+
+--8
+
+select * from employees where occu_code like 'SAL';
+
+--9
+
+select name, surname from employees where dept_num=20;
+
+--10
+
+select * from employees where occu_code like 'MAN' and (dept_num=20 or dept_num=30) order by dept_num desc, surname asc;
+
+--11
+
+select * from employees where salary > 2000 or dept_num=20;
+
+--12
+
+select * from employees where surname like 'S%';
+
+--13
+
+select * from employees where surname like 'C%' and  name like '%A%';
+
+--14
+
+select * from employees where salary >= 1000 and salary <= 2000;
+
+--15
+
+select * from employees where occu_code like 'SAL' and commission > 1000;
+
+--16
+
+select name, surname from employees where surname like '%S' and salary > 3000;
+
+--17
+
+select * from departments where name like 'A%' and name like '%G';
+
+--18
+
+select surname from employees where commission is null;
+
+--19
+
+select surname from employees where commission is null and surname like 'P%';
+
+--20
+
+select surname from employees where occu_code in ('MAN','SAL', 'EMP');
+
+--21
+
+select surname from employees where occu_code not like 'MAN' and occu_code not like 'EMP' and salary > 1000;
+
+
+

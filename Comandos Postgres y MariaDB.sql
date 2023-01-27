@@ -232,3 +232,212 @@ and product_code='PLAY4';
 --Si lo quieres actualizar(ejemplo): update orders set number=2 where number=3; / Aixó agafarà el que sigui number 3 y ho canviarà a 2.
 
 GRANT select ON SQL1NORMALAUTH.OCCUPATIONS TO 'adurango2'@'%';
+
+
+
+------------------------------------------------------------------------------------------------------------
+
+select 'num' as f1, name from departments;
+
+select num, name, num + 10 as numupgrade from departments;
+
+
+nombre apellido salario y salario + 20%
+
+select surname, name, salary,
+salary * 1.2 as revised_salary from employees;
+
+select * 
+from employees as E, departments as D
+where E.dept_num = D.num;
+
+select E.name, E.surname, E.start_date, E.salary, D.name as dept_name
+from employees as E, departments as D
+where E.dept_num = D.num;
+
+select * from teachers, students, subjects, courses
+where teachers.ID = students.ID and
+teachers.ID = courses.ID;
+
+
+select distinct name
+from employees
+order by name;
+
+select num, surname from employees order by num asc;
+
+select name, surname from employees order by surname asc, name desc;
+
+\i /home/juanjobc/Escriptori/PO5copy.SQL
+
+--Ejemplo de base de datos 'samplecompany' TEMA 6
+
+/* Esto selecciona en la tabla emplyees los apellidos que empiecen por C y que tengan nombre que termine en A */
+select * from employees where surname like 'C%' and name like '%A';
+
+
+/* Junta las dos cosas seguidas en una sola columna*/
+select concat(name, surname ) from employees;
+
+/* Los junta pero separandolos con un guiń entre ellos */
+select concat_ws('-', name, surname) from employees;
+
+/*Te enseña los nombres y les resta las letras con respecto al número, de izquierda a derecha */
+select substr(name, 2) from departments;
+select substr(name, 4) from departments;
+
+/*Coje la primera letra de la izquierda y la ultima letra de la derecha y lo muestra en respectivas columnas */
+select name, left(name,1), right(name,1) from departments;
+
+/* La función initcap te decapitaliza, pone la primera en mayúsuclas y el resto en minúsculas */
+select concat_ws (' ', initcap(E.name), initcap(E. surname)) as FullName
+from employees E;
+
+/* Pone lo seleccionado en minúsculas */
+select lower(name)
+from employees;
+
+/*Pone lo seleccionado en mayúsculas */
+select upper(name)
+from employees;
+
+/* Esto crea una segunda tabla con la longitud de los apellidos y los ordena de más cortos a más largos */
+select surname, length(surname)
+from employees order by length(surname);
+
+/*Junta dos columnas en 1, y el espacio en blanco es para que haya una separación entre ellas */
+select concat(name, ' ', surname)
+from employees;
+
+select start_date, to_char(start_date, 'YYYY') from employees;
+
+'MONTH' enseña el mes en mayúsculas
+'Month' enseña el mes con solo la primera letra en mayúsuclas
+'month' enseña el mes en minúsculas
+'mon' enseña solo las 3 primeras letras del mes
+'MM' para que enseñe el mes con números
+
+'desc' es para especificar que quieres que se ordene de manera descendente
+
+/*Selecciona todo de employees donde el mes de comienzo sea igual a 2, o sea, en febrero */
+select * from employees where to_char(start_date, 'MM')=2;
+
+/*Convierte lo de dentro en número ya que to_char enseña texto, asi que cast lo convierte en número para que no de error */
+select * from employees where cast(to_char(start_date, 'MM')as integer) =2;
+
+/*Ejemplo de Alter table */
+alter table hola add primary key (un);
+alter table hola add constraint fk_grade_id references grades(ID);
+
+alter table hola 
+ rename COLUMN  saludo to saludito;
+
+ALTER TABLE hola
+RENAME TO holaaa;
+
+alter table tablename 
+add constraint fk_table_1 foreign key (column-name) references otratabla (suprimarykey);
+
+
+/*esto seleccionará solo a los trabajadores que empezaron a trabajar entre las fechas puestas */
+select * from employees where start_date between '1/1/2018' and '31/12/2018';
+/* tambien se puede poner así */
+select * from employees where start_date >= '1/1/2018' and start_date <= '31/12/2018';
+
+/* Esto hará la consulta pero el limit hará que solo se muestren los primeros 4 resultados */
+select name, surname from employees order by surname, name limit 4;
+
+
+offset = filas que se tiene que saltar antes de empezar a contar.
+limit = especificar la cantidad de resultados que quieres que se muestren en una consulta.
+
+
+/*ejemplo de filtraje en un producto cartesiano ( usando la base de datos samplecompany):*/
+select * from departments, towns where towns.code = departmetns.town_code;
+
+select D.name as department, T.name as town from departments as D, towns as T where D.town_code = T.code;
+
+select * from 
+employees, departments, towns
+where employees.dept_num = departments.num and 
+departments.town_code = towns.code;
+
+/* lista de todos los apellidos y nombres de los trabajadores de la empresa,
+ junto con el departamentos donde trabajan y la ciudad donde está ubicado, IMPORTANTE */
+select E.surname, E.name, D.name as department, T.name as town
+from employees E,
+ departments D,
+  towns T
+where E.dept_num = D.num and 
+D.town_code = T.code
+order by D.name;
+
+/*ejemplo de UNION */
+(select name, surname, start_date
+from employees
+where year(start_date) = 2004)
+UNION
+(select name, surname, start_date
+from employees
+where year(start_date) = 2010);
+
+select name 
+from departments
+union select name from towns;
+
+/*selecciona los nombres, apellidos y fecha de inicio de los empleados que empezaron en 2004 o 2010. 
+SOLO EN POSTGRES aunque mariadb también se lo come*/
+select name, surname, start_date from employees
+where to_char(start_date, 'YYYY') = '2004'
+or to_char(start_date, 'YYYY') = '2010';
+
+/* muestra los trabajadores que empezaron a trabajar en 2010 */
+select num from employees where year(start_date) = 2010
+
+/*muestra los trabajadores que son managers, de manera unica */
+select DISTINCT manager from employees;
+
+union junta las dos tablas.
+intersect solo muestra los valores que coinciden en ambas tablas.
+
+/* solo los valores que hay en ambas*/
+select num from employees where year(start_date) = 2010
+intersect
+select distinct manager from employees;
+
+/* otra manera de hacer la querie de intersect */
+select num from employees
+where year(start_date)= 2010
+and num in (
+  select distinct manager
+from employees
+);
+
+--Enseña sólo lo que coincide con el rango de parametros que tu le has 
+--especificado después del IN--
+select * from departments where num in (10,15,25);
+
+--except sirve para hacer una consulta donde se arrojen los resultados
+--de una consulta que NO estén en los resultados de la segunda consulta
+---MariaDB;
+select num from employees where YEAR(start_date) = 2010
+EXCEPT
+select distinct manager from employees;
+
+--AVG: saca la media 
+select avg (salary) from employees where dept_num = 10;
+
+--MIN: valor minimo
+--MAX: valor maximo
+--SUM: suma de valores
+--COUNT: numero de valores
+
+--ejemplo de Group By en MARIADB:
+select D.name, avg(E.salary)
+from employees E, departments D
+where E.dept_num = D.num
+group by D.name;
+select D.name, avg(E.salary), max(E.salary) kakota, min(E.salary) boñiga
+from employees E, departments D
+where E.dept_num = D.num
+group by D.name;

@@ -1,6 +1,7 @@
 --MADE IN POSTGRES--
+drop if exist 'po5prueba3';
 
-create database P05;
+create database 'po5prueba3';
 
 create table company (
 ID varchar(50) primary key default 'Unknown Company',
@@ -41,12 +42,12 @@ create table trips (
     origin_port_ID varchar(10), 
     destiny_port_ID varchar(10),
     constraint fk_1_trips foreign key (boat_ID) references boats (ID),
-    constraint fk_2_trips foreign key (origin_port_ID) references ports  (ID),
-    constraint fk_3_trips foreign key (destiny_port_ID) references ports (ID) 
+    constraint fk_2_trips foreign key (origin_port_ID) references ports  (ID) on delete cascade,
+    constraint fk_3_trips foreign key (destiny_port_ID) references ports (ID) on delete cascade
 );
     
 create table company_trips (
-trip_ID int references trips (ID),
+trip_ID int,
 company_ID varchar(50),
 primary key ( trip_ID,company_ID),
 constraint fk_1_company_trips foreign key (trip_ID) references trips (ID),
@@ -57,8 +58,8 @@ create table clients_trips (
     clients_ID int,
     trip_ID int,
     primary key (clients_ID,trip_ID),
-    constraint fk_1_clients_trips foreign key (clients_ID) references clients (ID) on delete cascade,
-    constraint fk_2_clients_trips foreign key (trip_ID) references trips (ID) on delete set null
+    constraint fk_1_clients_trips foreign key (clients_ID) references clients (ID) on delete set null,
+    constraint fk_2_clients_trips foreign key (trip_ID) references trips (ID)
 );
 
 ---------------------------------------
@@ -112,7 +113,7 @@ insert into company_trips (trip_ID, company_ID) values
 ('7','D04');
 insert into clients_trips (clients_ID, trip_ID) values
 ('1','5'),
-('2','2'),
+('2','7'),
 ('3','3'),
 ('4','6'),
 ('5','4');
