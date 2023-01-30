@@ -4,7 +4,6 @@ from employees E, departments D
 where E.dept_num = D.num and D.name = 'SALES'
 ;
 
-
 --9
 
 select D.name, sum(E.salary)
@@ -13,6 +12,7 @@ where E.dept_num = D.num and D.name = 'SALES'
 group by D.name;
 
 --10
+
 select D.name, count(E.num) as count_employees
 from employees E, departments D
 where E.dept_num = D.num and E.occu_code = 'EMP'
@@ -23,9 +23,6 @@ group by D.name;
 select O.name
 from employees E, departments D, occupations O
 where D.name = 'RESEARCH' and e.dept_num = D.num;
-
-
-
 
 --18 
 --Esto solo funcionaría si no tocan el codigo asociado al departamento
@@ -56,3 +53,15 @@ where E.occu_code = O.code and
 E.dept_num = D.num
 group by D.name, O.name
 order by D.name, O.name;
+
+--26
+select name, surname, start_date, count(*) over () 
+as count_employees
+from employees
+ORDER BY start_date;
+
+
+--27
+select rank() over (order by start_date asc) as row_number,
+ name, surname
+from employees;

@@ -441,3 +441,22 @@ select D.name, avg(E.salary), max(E.salary) kakota, min(E.salary) boñiga
 from employees E, departments D
 where E.dept_num = D.num
 group by D.name;
+
+
+select E.dept_num, avg(E.salary) as "average salary"
+from employees E
+group by E.dept_num;
+
+--OVER crea una partición para aplicar una operación stipulada sobre un parametro
+--en este caso aplica la media de salary sobre las particiones creadas con dept_num
+select dept_num,
+  name, surname,
+  salary,
+  avg(salary) OVER (PARTITION BY dept_num)
+from employees;
+
+--ejemplo de ranking
+select dept_num, num, start_date, rank() over (order by salary desc) 
+as ranking
+from employees;
+
