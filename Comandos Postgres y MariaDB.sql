@@ -460,3 +460,26 @@ select dept_num, num, start_date, rank() over (order by salary desc)
 as ranking
 from employees;
 
+--6.16 subqueries:
+select E.name, E.surname, E.dept_num, 
+(select count(*)
+from employees E1
+where E1.dept_num = E.dept_num) as n_dept
+from employees E
+order by E.dept_num;
+
+select E.name, E.surname, E.salary,
+E.dept_num, S.avgsalary
+from employees as E,
+(select dept_num,
+AVG(salary) as avgsalary
+from employees
+group by dept_num) as S
+where E.dept_num = S.dept_num
+order by E.dept_num;
+
+--Ejemlpo de having
+select dept_num, avg(salary)
+from employees
+group by dept_num
+having avg(salary) > (select avg(salary) from employees);
