@@ -100,7 +100,7 @@ group by O.OrderID
 
 
 --11
-select P.ProductName, sum( OD.Quantity  )  as Units
+select P.ProductName, sum(OD.Quantity) as Units
 from Products P, `Order Details` OD, Categories C
 where P.ProductID = OD.ProductID
 and P.CategoryID = C.CategoryID
@@ -125,18 +125,70 @@ order by P.UnitPrice desc limit 10;
 
 --14
 
-        select P.ProductID, year(O.OrderDate) as Year, P.UnitPrice, OD.UnitPrice, sum(OD.UnitPrice - P.UnitPrice)
-        from Products P, `Order Details` OD, Orders O
-        where P.ProductID = OD.ProductID
-        and OD.OrderID = O.OrderID
-        limit 10
-        ;
+ SELECT
+distinct OD.ProductID,
+year(O.OrderDate) as Year,
+P.UnitPrice,
+OD.UnitPrice,
+(OD.UnitPrice-(OD.UnitPrice * OD.Discount)) as UnitPriceWithDiscount,
+(OD.UnitPrice - P.UnitPrice) as profit
+from Products P, `Order Details` OD, Orders O
+where P.ProductID = OD.ProductID
+and OD.OrderID = O.OrderID
+order by profit desc, Year
+limit 10;
 
+--15
 
+SELECT
+P.ProductID,
+P.ProductName, 
+sum(OD.Quantity * (OD.UnitPrice - P.UnitPrice )) as Total_Profit
+from Products P, `Order Details` OD
+where P.ProductID = OD.ProductID
+group by P.ProductID
+order by Total_Profit DESC
+limit 10;
 
+--16
 
+SELECT
+distinct P.ProductID,
+P.ProductName,
+P.UnitPrice
+from Products P 
+where P.UnitPrice > (select avg(P1.UnitPrice) from Products P1)
+order by UnitPrice desc
+;
 
+--18
 
+SELECT
+S.SupplierID,
+S.CompanyName,
+count(P.ProductID) as qty
+from Suppliers S, Products P
+where P.SupplierID = S.SupplierID
+group by S.SupplierID
+order by qty desc, S.CompanyName asc
+limit 10;
+
+--19
+
+select count(*) as NumberBCN
+from Customers
+where City = 'Barcelona'
+;
+
+--20
+
+select
+CO.CompanyName, count(O.OrderID) as NumOrders
+from Customers CO, Orders O
+where CO.CustomerID = O.CustomerID
+group by CO.CompanyName
+having NumOrders > 25
+;
 
 
 

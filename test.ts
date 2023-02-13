@@ -1,1 +1,0 @@
-//comando de linux que encuentro archvios dentro de /dev que empiecen por d y que los copie dentro de /home/juan/dir1/dir2/dir3
