@@ -484,3 +484,16 @@ and P.UnitsInStock = 0
 and P.Discontinued is false
 
 ;
+
+--26
+
+select
+P.ProductID,
+P.ProductName,
+P.ReorderLevel,
+P.UnitsInStock,
+P.UnitsOnOrder
+from Products P
+where P.ReorderLevel > P.UnitsInStock
+and P.ReorderLevel > P.UnitsOnOrder
+;

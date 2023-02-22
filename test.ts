@@ -1,0 +1,1 @@
+//mariadb query with if and substr
