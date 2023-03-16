@@ -52,3 +52,5 @@ create table courses (
 insert into courses (teacher_ID, subject_ID) values 
 ('1','DB'),
 ('3','PRG');
+
+
